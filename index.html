@@ -7,7 +7,7 @@
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
-      max-width: 700px;
+      max-width: 800px;
       margin: auto;
     }
     h2 {
@@ -31,6 +31,14 @@
       min-height: 40px;
       margin-bottom: 15px;
     }
+    .result-line {
+      display: flex;
+      justify-content: space-between;
+    }
+    .count {
+      color: #888;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -46,11 +54,26 @@
   <div class="result" id="demKetQua"></div>
 
   <button onclick="ghepTrung()">Ghép Trùng</button>
-  <div class="result" id="trungKetQua"></div>
+  <div class="result">
+    <div class="result-line">
+      <div id="trungKetQua"></div>
+      <div class="count" id="countTrung"></div>
+    </div>
+  </div>
 
   <button onclick="loaiNhau()">Loại Nhau</button>
-  <div class="result" id="chiDan1"></div>
-  <div class="result" id="chiDan2"></div>
+  <div class="result">
+    <div class="result-line">
+      <div id="chiDan1"></div>
+      <div class="count" id="countChiDan1"></div>
+    </div>
+  </div>
+  <div class="result">
+    <div class="result-line">
+      <div id="chiDan2"></div>
+      <div class="count" id="countChiDan2"></div>
+    </div>
+  </div>
 
   <script>
     function tachSo(text) {
@@ -67,6 +90,7 @@
       const dan2 = tachSo(document.getElementById("dan2").value);
       const trung = dan1.filter(s => dan2.includes(s));
       document.getElementById("trungKetQua").innerText = `Trùng: ${trung.join(", ")}`;
+      document.getElementById("countTrung").innerText = `(${trung.length} số)`;
     }
 
     function loaiNhau() {
@@ -76,6 +100,8 @@
       const chiDan2 = dan2.filter(s => !dan1.includes(s));
       document.getElementById("chiDan1").innerText = `Chỉ có trong Dàn 1: ${chiDan1.join(", ")}`;
       document.getElementById("chiDan2").innerText = `Chỉ có trong Dàn 2: ${chiDan2.join(", ")}`;
+      document.getElementById("countChiDan1").innerText = `(${chiDan1.length} số)`;
+      document.getElementById("countChiDan2").innerText = `(${chiDan2.length} số)`;
     }
   </script>
 </body>
