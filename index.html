@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>WEB LỌC DÀN SỐ MIỄN PHÍ</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      color: #007bff;
+    }
+    textarea {
+      width: 100%;
+      height: 80px;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    button {
+      margin: 5px 0;
+      padding: 8px 16px;
+      font-size: 16px;
+    }
+    .result {
+      background: #f4f4f4;
+      padding: 10px;
+      min-height: 40px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h2>WEB LỌC DÀN SỐ MIỄN PHÍ</h2>
+
+  <label><strong>Nhập Dàn 1:</strong></label>
+  <textarea id="dan1"></textarea>
+
+  <label><strong>Nhập Dàn 2:</strong></label>
+  <textarea id="dan2"></textarea>
+
+  <button onclick="demSo()">Đếm Dàn 1</button>
+  <div class="result" id="demKetQua"></div>
+
+  <button onclick="ghepTrung()">Ghép Trùng</button>
+  <div class="result" id="trungKetQua"></div>
+
+  <button onclick="loaiNhau()">Loại Nhau</button>
+  <div class="result" id="chiDan1"></div>
+  <div class="result" id="chiDan2"></div>
+
+  <script>
+    function tachSo(text) {
+      return text.split(/[,\s]+/).map(s => s.trim()).filter(s => s !== "").sort();
+    }
+
+    function demSo() {
+      const dan1 = tachSo(document.getElementById("dan1").value);
+      document.getElementById("demKetQua").innerText = `Số lượng: ${dan1.length}`;
+    }
+
+    function ghepTrung() {
+      const dan1 = tachSo(document.getElementById("dan1").value);
+      const dan2 = tachSo(document.getElementById("dan2").value);
+      const trung = dan1.filter(s => dan2.includes(s));
+      document.getElementById("trungKetQua").innerText = `Trùng: ${trung.join(", ")}`;
+    }
+
+    function loaiNhau() {
+      const dan1 = tachSo(document.getElementById("dan1").value);
+      const dan2 = tachSo(document.getElementById("dan2").value);
+      const chiDan1 = dan1.filter(s => !dan2.includes(s));
+      const chiDan2 = dan2.filter(s => !dan1.includes(s));
+      document.getElementById("chiDan1").innerText = `Chỉ có trong Dàn 1: ${chiDan1.join(", ")}`;
+      document.getElementById("chiDan2").innerText = `Chỉ có trong Dàn 2: ${chiDan2.join(", ")}`;
+    }
+  </script>
+</body>
+</html>
