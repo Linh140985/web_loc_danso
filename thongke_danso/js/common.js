@@ -1,56 +1,53 @@
-// Chuyển chuỗi thành mảng số: "01,03,10" => ["01","03","10"]
-function tachSo(str) {
-  return str.split(/[\s,\n]+/).map(s => s.trim()).filter(s => /^\d{1,2}$/.test(s)).map(s => s.padStart(2, '0'));
-}
+document.getElementById("phanTichBtn").addEventListener("click", async function () {
+  const input = document.getElementById("danInput").value;
+  const danso = input.split(/[\s,]+/).map(s => s.trim()).filter(s => s !== "");
 
-// Hàm fetch dữ liệu kết quả từ RSS miền Bắc
-async function fetchKetQua() {
-  const proxy = "https://api.allorigins.win/get?url=";
-  const url = encodeURIComponent("https://kqxs.net.vn/rss/mien-bac");
-  const res = await fetch(`${proxy}${url}`);
-  const data = await res.json();
-  const parser = new DOMParser();
-  const xml = parser.parseFromString(data.contents, "text/xml");
-  const items = [...xml.querySelectorAll("item")];
+  try {
+    const res = await fetch("js/data.json");
+    const data = await res.json();
 
-  return items.map(item => {
-    const title = item.querySelector("title").textContent;
-    const desc = item.querySelector("description").textContent;
-    const matchDate = title.match(/(\d{2})\/(\d{2})\/(\d{4})/);
-    const yyyy_mm_dd = `${matchDate[3]}-${matchDate[2]}-${matchDate[1]}`;
-    const matchNum = desc.match(/Giải đặc biệt: (\d{2})/);
-    return { ngay: yyyy_mm_dd, ketqua: matchNum ? matchNum[1] : null };
-  });
-}
+    let maxTruot = 0;
+    let currentTruot = 0;
+    let lastTrung = "Chưa có";
 
-// Hàm phân tích dàn khi nhấn nút
-async function phanTichDan() {
-  const dan = tachSo(document.getElementById("dan").value);
-  const data = await fetchKetQua();
+    for (let i = data.length - 1; i >= 0; i--) {
+      const ngay = data[i].ngay;
+      const kq = data[i].kq;
 
-  let ngayTrung = null;
-  let soNgayTruot = 0;
-  let maxTruot = 0;
-  let dem = 0;
+      const trung = kq.some(num => danso.includes(num));
 
-  for (let i = 0; i < data.length; i++) {
-    const kq = data[i].ketqua;
-    if (dan.includes(kq)) {
-      if (!ngayTrung) ngayTrung = data[i].ngay;
-      maxTruot = Math.max(maxTruot, dem);
-      dem = 0;
-    } else {
-      dem++;
-      if (!ngayTrung) soNgayTruot++;
+      if (trung) {
+        lastTrung = ngay;
+        break;
+      } else {
+        currentTruot++;
+      }
     }
+
+    // Tính max trượt lịch sử
+    let maxCount = 0;
+    let tempCount = 0;
+    for (let i = 0; i < data.length; i++) {
+      const kq = data[i].kq;
+      const trung = kq.some(num => danso.includes(num));
+      if (!trung) {
+        tempCount++;
+        maxCount = Math.max(maxCount, tempCount);
+      } else {
+        tempCount = 0;
+      }
+    }
+
+    let nhanDinh = "BÌNH THƯỜNG";
+    if (currentTruot >= maxCount) nhanDinh = "VƯỢT MAX";
+    else if (currentTruot >= maxCount - 1) nhanDinh = "GẦN MAX";
+
+    document.getElementById("ngayGanNhat").textContent = lastTrung;
+    document.getElementById("soNgayTruot").textContent = currentTruot;
+    document.getElementById("maxLichSu").textContent = maxCount;
+    document.getElementById("nhanDinh").textContent = nhanDinh;
+
+  } catch (err) {
+    alert("Lỗi khi đọc dữ liệu: " + err);
   }
-  maxTruot = Math.max(maxTruot, dem); // cập nhật lần cuối nếu chưa gặp trúng
-
-  // Gán kết quả lên giao diện
-  document.getElementById("ngayTrung").textContent = ngayTrung || "Chưa có";
-  document.getElementById("soNgayTruot").textContent = soNgayTruot;
-  document.getElementById("maxTruot").textContent = maxTruot;
-
-  const nd = soNgayTruot > maxTruot ? "VƯỢT MAX" : soNgayTruot >= maxTruot - 2 ? "GẦN MAX" : "CHƯA ĐẾN MAX";
-  document.getElementById("nhanDinh").textContent = nd;
-}
+});
