@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thống kê Dàn Trượt</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      color: #007bff;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .result {
+      background: #f9f9f9;
+      padding: 15px;
+      border: 1px solid #ccc;
+    }
+    .label {
+      font-weight: bold;
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Thống kê Dàn Trượt</h2>
+
+  <label for="dan"><strong>Nhập dàn số (00–99, cách nhau bằng dấu phẩy hoặc dòng):</strong></label>
+  <textarea id="dan"></textarea>
+
+  <button onclick="phanTichDan()">Phân tích</button>
+
+  <div class="result" id="output">
+    <p><span class="label">Ngày trúng gần nhất:</span><span id="ngayTrung"></span></p>
+    <p><span class="label">Số ngày trượt liên tiếp:</span><span id="soNgayTruot"></span></p>
+    <p><span class="label">Max trượt trong lịch sử:</span><span id="maxTruot"></span></p>
+    <p><span class="label">Nhận định:</span><span id="nhanDinh"></span></p>
+  </div>
+
+  <script src="js/common.js"></script>
+</body>
+</html>
