@@ -11,6 +11,11 @@ function chuanHoaDan(input) {
   return formatted;
 }
 
+function dinhDangNgay(isoDate) {
+  const [yyyy, mm, dd] = isoDate.split('-');
+  return `${dd}/${mm}/${yyyy}`;
+}
+
 function tinhChuoiTruot(dan, data) {
   const days = Object.keys(data).sort();
   const result = [];
@@ -22,10 +27,9 @@ function tinhChuoiTruot(dan, data) {
   }
 
   // Tính max trượt
-  let max = 0, current = 0;
+  let max = 0, currentStreak = 0;
   let currentStart = '', currentEnd = '';
   let maxStart = '', maxEnd = '';
-  let currentStreak = 0;
 
   for (let i = 0; i < result.length; i++) {
     if (!result[i].match) {
@@ -76,11 +80,11 @@ function phanTichDanSo() {
 
   const thongke = tinhChuoiTruot(dan, data);
   const out = [
-    '\u{1F4CA} Dàn chuẩn: ' + dan.join(','),
-    '\u{23FA} Số lượng: ' + dan.length + ' số',
-    '\u{1F4C5} Đang trượt: ' + thongke.curTruot + ' ngày' + (thongke.curTruot > 0 ? ` (từ ${thongke.curFrom} đến ${thongke.curTo})` : ''),
-    '\u{1F3C6} Max trượt: ' + thongke.maxTruot + ' ngày' + (thongke.maxTruot > 0 ? ` (từ ${thongke.maxFrom} đến ${thongke.maxTo})` : '')
+    '<span>📊 <b>Dàn chuẩn:</b><br>' + dan.join(',') + '</span>',
+    '<span>🔵 <b>Số lượng:</b> ' + dan.length + ' số</span>',
+    '<span>📅 <b>Đang trượt:</b> ' + thongke.curTruot + ' ngày' + (thongke.curTruot > 0 ? ` (từ ${dinhDangNgay(thongke.curFrom)} đến ${dinhDangNgay(thongke.curTo)})` : '') + '</span>',
+    '<span>🏆 <b>Max trượt:</b> ' + thongke.maxTruot + ' ngày' + (thongke.maxTruot > 0 ? ` (từ ${dinhDangNgay(thongke.maxFrom)} đến ${dinhDangNgay(thongke.maxTo)})` : '') + '</span>'
   ];
 
-  document.getElementById('ketqua').innerText = out.join('\n');
+  document.getElementById('ketqua').innerHTML = out.join('<br><br>');
 }
