@@ -16,6 +16,14 @@ function dinhDangNgay(isoDate) {
   return `${dd}/${mm}/${yyyy}`;
 }
 
+function tachNhom(arr, size) {
+  const result = [];
+  for (let i = 0; i < arr.length; i += size) {
+    result.push(arr.slice(i, i + size).join(', '));
+  }
+  return result;
+}
+
 function tinhChuoiTruot(dan, data) {
   const days = Object.keys(data).sort();
   const result = [];
@@ -79,12 +87,13 @@ function phanTichDanSo() {
   }
 
   const thongke = tinhChuoiTruot(dan, data);
+  const nhom = tachNhom(dan, 10).map(gr => `<div>${gr}</div>`).join('');
   const out = [
-    '<span>📊 <b>Dàn chuẩn:</b><br>' + dan.join(',') + '</span>',
-    '<span>🔵 <b>Số lượng:</b> ' + dan.length + ' số</span>',
-    '<span>📅 <b>Đang trượt:</b> ' + thongke.curTruot + ' ngày' + (thongke.curTruot > 0 ? ` (từ ${dinhDangNgay(thongke.curFrom)} đến ${dinhDangNgay(thongke.curTo)})` : '') + '</span>',
-    '<span>🏆 <b>Max trượt:</b> ' + thongke.maxTruot + ' ngày' + (thongke.maxTruot > 0 ? ` (từ ${dinhDangNgay(thongke.maxFrom)} đến ${dinhDangNgay(thongke.maxTo)})` : '') + '</span>'
+    '<div>📊 <b>Dàn chuẩn:</b><br>' + nhom + '</div>',
+    '<div>🔵 <b>Số lượng:</b> ' + dan.length + ' số</div>',
+    '<div>📅 <b>Đang trượt:</b> ' + thongke.curTruot + ' ngày' + (thongke.curTruot > 0 ? ` (từ ${dinhDangNgay(thongke.curFrom)} đến ${dinhDangNgay(thongke.curTo)})` : '') + '</div>',
+    '<div>🏆 <b>Max trượt:</b> ' + thongke.maxTruot + ' ngày' + (thongke.maxTruot > 0 ? ` (từ ${dinhDangNgay(thongke.maxFrom)} đến ${dinhDangNgay(thongke.maxTo)})` : '') + '</div>'
   ];
 
-  document.getElementById('ketqua').innerHTML = out.join('<br><br>');
+  document.getElementById('ketqua').innerHTML = out.join('<br>');
 }
