@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -6,6 +7,12 @@
   <title>Phân Tích Dàn Số</title>
   <script src="common.js" defer></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .wrap-result span {
+      display: block;
+      margin-bottom: 8px;
+    }
+  </style>
 </head>
 <body class="bg-gray-100 min-h-screen p-4">
   <div class="max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-md">
@@ -16,7 +23,7 @@
 
     <button onclick="phanTichDanSo()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">PHÂN TÍCH</button>
 
-    <div id="ketqua" class="mt-6 whitespace-pre-wrap text-gray-800"></div>
+    <div id="ketqua" class="mt-6 text-gray-800 wrap-result"></div>
   </div>
 </body>
 </html>
